@@ -8,12 +8,19 @@ const ToDoLists = (props) => {
 				<i
 					className="icon"
 					onClick={() => {
-						props.onSelect(props.id);
+						props.onSelect(props.data.timeStamp);
 					}}
 				>
 					<BsFillXCircleFill />
 				</i>
-				<li>{props.text}</li>
+				<li>{props.data.text}</li>
+				<input
+					type="checkbox"
+					value={props.data.done}
+					onChange={() => {
+						props.toggleCheckbox(props.data.timeStamp);
+					}}
+				/>
 			</div>
 		</>
 	);

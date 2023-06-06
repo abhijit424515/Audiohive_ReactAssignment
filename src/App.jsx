@@ -11,17 +11,42 @@ const App = () => {
 	};
 
 	const listOfItems = () => {
+		// timeStamp will be unique, so will serve as a constant ID, unlike index, which can change for a todo if the list is modified
+		// also added a done boolean
 		setItems((oldItems) => {
-			return [...oldItems, inputList];
+			return [
+				...oldItems,
+				{
+					text: inputList,
+					timeStamp: new Date().toISOString(),
+					done: false,
+				},
+			];
 		});
 		setInputList("");
 	};
 
 	const deleteItems = (id) => {
-		console.log("DED");
+		// using timeStamp as id to identify the todo
 		setItems((oldItems) => {
-			return oldItems.filter((arrElem, index) => {
-				return index !== id;
+			return oldItems.filter((arrElem) => {
+				return arrElem.timeStamp !== id;
+			});
+		});
+	};
+
+	const toggleCheckbox = (id) => {
+		// to toggle the checkbox for the selected todo
+		setItems((oldItems) => {
+			return oldItems.map((arrElem) => {
+				if (arrElem.timeStamp == id) {
+					return {
+						...arrElem,
+						done: !arrElem.done,
+					};
+				} else {
+					return arrElem;
+				}
 			});
 		});
 	};
@@ -43,13 +68,15 @@ const App = () => {
 				<button onClick={listOfItems}> +</button>
 
 				<ol>
-					{Items.map((itemval, index) => {
+					{Items.map((itemval) => {
 						return (
+							// using timeStamp as key and id, since it is unique as well as constant
 							<ToDoLists
-								key={index}
-								id={index}
-								text={itemval}
+								key={itemval.timeStamp}
+								id={itemval.timeStamp}
+								data={itemval}
 								onSelect={deleteItems}
+								toggleCheckbox={toggleCheckbox}
 							/>
 						);
 					})}
