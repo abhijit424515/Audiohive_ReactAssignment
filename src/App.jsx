@@ -1,9 +1,6 @@
 import { useState } from "react";
-import reactLogo from "./assets/react.svg";
-import viteLogo from "/vite.svg";
 import "./App.css";
 import React from "react";
-import { useLongPress } from "use-long-press";
 import ToDoLists from "./ToDoLists";
 
 const App = () => {
@@ -46,7 +43,6 @@ const App = () => {
 				<button onClick={listOfItems}> +</button>
 
 				<ol>
-					{/* <li>{inputList}</li> */}
 					{Items.map((itemval, index) => {
 						return (
 							<ToDoLists

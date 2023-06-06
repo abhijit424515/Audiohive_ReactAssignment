@@ -1,6 +1,5 @@
 import React from "react";
 import { BsFillXCircleFill } from "react-icons/bs";
-import { useLongPress } from "use-long-press";
 
 const ToDoLists = (props) => {
 	return (
