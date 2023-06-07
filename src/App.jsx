@@ -1,44 +1,40 @@
 import { useState } from "react";
 import "./App.css";
-import React from "react";
-import ToDoLists from "./ToDoLists";
+import Todo from "./components/Todo";
 
 const App = () => {
-	const [inputList, setInputList] = useState("");
-	const [Items, setItems] = useState([]);
-	const itemEvent = (event) => {
-		setInputList(event.target.value);
-	};
+	const [textbox, setTextbox] = useState("");
+	const [todos, setTodos] = useState([]);
 
-	const listOfItems = () => {
+	const textBoxEvent = (event) => setTextbox(event.target.value);
+
+	const addTodo = () => {
 		// timeStamp will be unique, so will serve as a constant ID, unlike index, which can change for a todo if the list is modified
 		// also added a done boolean
-		setItems((oldItems) => {
-			return [
-				...oldItems,
-				{
-					text: inputList,
-					timeStamp: new Date().toISOString(),
-					done: false,
-				},
-			];
-		});
-		setInputList("");
+		setTodos((oldtodos) => [
+			...oldtodos,
+			{
+				text: textbox,
+				timeStamp: new Date().toISOString(),
+				done: false,
+			},
+		]);
+		setTextbox("");
 	};
 
-	const deleteItems = (id) => {
+	const deleteTodo = (id) =>
 		// using timeStamp as id to identify the todo
-		setItems((oldItems) => {
-			return oldItems.filter((arrElem) => {
+		setTodos((oldtodos) => {
+			return oldtodos.filter((arrElem) => {
 				return arrElem.timeStamp !== id;
 			});
 		});
-	};
 
-	const toggleCheckbox = (id) => {
+	const toggleCheckbox = (id) =>
 		// to toggle the checkbox for the selected todo
-		setItems((oldItems) => {
-			return oldItems.map((arrElem) => {
+		// if the return object is in one-line, no need for the curly braces and the return keyword
+		setTodos((oldtodos) =>
+			oldtodos.map((arrElem) => {
 				if (arrElem.timeStamp == id) {
 					return {
 						...arrElem,
@@ -47,9 +43,8 @@ const App = () => {
 				} else {
 					return arrElem;
 				}
-			});
-		});
-	};
+			})
+		);
 
 	return (
 		<div className="main_div">
@@ -60,22 +55,20 @@ const App = () => {
 				<input
 					type="text"
 					placeholder="Add a task"
-					name=""
-					id=""
-					onChange={itemEvent}
-					value={inputList}
+					onChange={textBoxEvent}
+					value={textbox}
 				/>
-				<button onClick={listOfItems}> +</button>
+				<button onClick={addTodo}>+</button>
 
 				<ol>
-					{Items.map((itemval) => {
+					{todos.map((itemval) => {
 						return (
-							// using timeStamp as key and id, since it is unique as well as constant
-							<ToDoLists
+							// using timeStamp as key, since it is unique as well as constant
+							// timeStamp (todo id) is already in data
+							<Todo
 								key={itemval.timeStamp}
-								id={itemval.timeStamp}
 								data={itemval}
-								onSelect={deleteItems}
+								deleteTodo={deleteTodo}
 								toggleCheckbox={toggleCheckbox}
 							/>
 						);
